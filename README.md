@@ -36,7 +36,7 @@ The Release launcher is `bin\Release\net48\AwardChecker.exe`; architecture-
 specific application builds are under `bin\Release\net48\x86` and `x64`.
 The tests build the x86 application. Copy the launcher/configuration, both
 architecture-specific app/configuration pairs, this README, LICENSE,
-THIRD-PARTY-NOTICES.md and docs/index.html into the portable
+THIRD-PARTY-NOTICES.md and the docs folder into the portable
 layout below, in a writable folder of your choice. Start `AwardChecker.exe`.
 The runtime contains the launcher executable/configuration, x86/x64 application
 executables/configurations and those public documents, plus Profiles, Defaults and Reports
@@ -149,6 +149,11 @@ AwardChecker\
   THIRD-PARTY-NOTICES.md
   docs\
     index.html
+    screenshots\
+      profile.png
+      bands-modes.png
+      rule-import.png
+      results.png
   Profiles\
   Defaults\
     User-Columns.xml

@@ -16,6 +16,9 @@
     code { overflow-wrap: anywhere; }
     section { scroll-margin-top: 1rem; }
     .notice { border-left: 4px solid #b66b00; background: #fff7e6; padding: .8rem 1rem; }
+    figure { margin: 1.5rem 0; }
+    figure img { display: block; max-width: 100%; height: auto; }
+    figcaption { margin-top: .5rem; color: #435568; }
     @media print { body { padding: 0; background: white; } header, main, footer { padding: 0; } nav { display: none; } }
   </style>
 </head>
@@ -81,6 +84,14 @@
     <p>Begin defaults to 00:00 and End to 23:59 UTC. The entire End minute counts.
       Old date-only profiles retain whole-day behavior. Saved profile names
       appear in the title only after loading or successful saving.</p>
+    <figure>
+      <img src="screenshots/profile.png" alt="New award profile editor with empty award levels">
+      <figcaption>Profile and award levels for a new award.</figcaption>
+    </figure>
+    <figure>
+      <img src="screenshots/bands-modes.png" alt="Bands, modes and groups editor with example selections">
+      <figcaption>Choose eligible bands, modes and counting groups.</figcaption>
+    </figure>
   </section>
   <section id="import">
     <h2>Import and review rules</h2>
@@ -96,6 +107,10 @@
       the PC and must verify the answer.</p>
     <p>The structured format keeps the header <code>AWARDSCORER-IMPORT: 1</code>
       for compatibility. Only import content you are authorized to use.</p>
+    <figure>
+      <img src="screenshots/rule-import.png" alt="Rule importer displaying a synthetic example and review items">
+      <figcaption>Review a draft interpretation of synthetic rules before applying it.</figcaption>
+    </figure>
   </section>
   <section id="counting">
     <h2>Eligibility, points and duplicate counting</h2>
@@ -134,6 +149,10 @@
     <p>Exports are stored in the portable Reports folder. Review HTML/CSV before
       sharing: location headers may include your address. Hide unneeded columns
       and use landscape/scaling when printing wide reports.</p>
+    <figure>
+      <img src="screenshots/results.png" alt="Results summary and QSO details using synthetic data">
+      <figcaption>Review counted QSOs and summary totals using synthetic data.</figcaption>
+    </figure>
   </section>
   <section id="privacy">
     <h2>Local data and privacy</h2>

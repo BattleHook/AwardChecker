@@ -7,6 +7,7 @@ Tests/obj/
 *.ldb
 *.csv
 *.png
+!docs/screenshots/*.png
 Preview/
 Profiles/
 Defaults/
