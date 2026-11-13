@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>AwardChecker.App</AssemblyName>
+    <Version>1.0.5</Version>
+    <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget Condition="'$(PlatformTarget)' == ''">x86</PlatformTarget>
+    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\$(PlatformTarget)\</IntermediateOutputPath>
+    <OutputPath>bin\$(Configuration)\net48\$(PlatformTarget)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="LaunchSettings.cs" />
+    <Compile Include="DriverSelection.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="RuleTextImporter.cs" />
+    <Compile Include="AiRuleAssist.cs" />
+    <Compile Include="RuleImportDialog.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="MainForm.cs" />
+    <Compile Include="Columns.cs" />
+    <Compile Include="Report.cs" />
+  </ItemGroup>
+</Project>

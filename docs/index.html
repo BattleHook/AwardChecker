@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AwardChecker - installation and user guide</title>
+  <style>
+    :root { color-scheme: light; font-family: "Segoe UI", sans-serif; color: #172a3a; background: #f5f7fa; }
+    body { max-width: 62rem; margin: auto; padding: 1.5rem; line-height: 1.6; }
+    header, main, footer { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: .5rem; }
+    h1, h2 { color: #19314b; line-height: 1.25; }
+    a { color: #07599d; }
+    a:focus-visible { outline: 3px solid #d78000; outline-offset: 3px; }
+    nav ul { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; padding-left: 1.25rem; }
+    pre { overflow-x: auto; background: #edf2f7; padding: 1rem; }
+    code { overflow-wrap: anywhere; }
+    section { scroll-margin-top: 1rem; }
+    .notice { border-left: 4px solid #b66b00; background: #fff7e6; padding: .8rem 1rem; }
+    @media print { body { padding: 0; background: white; } header, main, footer { padding: 0; } nav { display: none; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>AwardChecker</h1>
+  <p>Windows desktop award analysis for DXKeeper logs. Version 1.0.5.</p>
+  <p class="notice">Independent, provisional calculations. AwardChecker reads on
+    explicit request and does not edit your log, submit QSOs or certify an award.</p>
+  <nav aria-label="Guide sections"><ul>
+    <li><a href="#install">Install</a></li><li><a href="#profile">Create a profile</a></li>
+    <li><a href="#import">Import rules</a></li><li><a href="#counting">Counting</a></li>
+    <li><a href="#results">Results and exports</a></li><li><a href="#privacy">Privacy</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#build">Build and test</a></li>
+    <li><a href="#support">Support</a></li>
+  </ul></nav>
+</header>
+<main>
+  <section id="install">
+    <h2>Installation and startup</h2>
+    <p>Use Windows with .NET Framework 4.8 and an architecture-compatible
+      Microsoft ACE OLE DB provider (12.0 or 16.0). The launcher prefers x64 ACE,
+      then x86 ACE, then the x86 Jet 4.0 fallback. Provider installation is separate;
+      an ODBC driver alone is not sufficient. No runtime or provider is bundled.</p>
+    <p>Build from source as described below, or use a separately supplied complete
+      portable distribution. A source checkout is not a binary release.</p>
+    <pre>AwardChecker\
+  AwardChecker.exe
+  AwardChecker.exe.config
+  README.md
+  x86\AwardChecker.App.exe
+  x86\AwardChecker.App.exe.config
+  x64\AwardChecker.App.exe
+  x64\AwardChecker.App.exe.config
+  Profiles\
+  Defaults\
+  Reports\</pre>
+    <p>Keep this structure in a writable folder and start
+      <code>AwardChecker.exe</code>, not an architecture-specific child.
+      Missing prerequisites or an architecture fallback are reported explicitly.
+      A failed database read does not silently select a different provider.</p>
+    <p>When replacing an older AwardScorer installation, close it first and
+      preserve Profiles, Defaults and Reports. Existing profile/default formats
+      remain compatible. Update your shortcut to the new launcher.</p>
+  </section>
+  <section id="profile">
+    <h2>Create or load an award profile</h2>
+    <ol>
+      <li>Choose <strong>New profile</strong> or <strong>Load profile...</strong>.
+        No award template or station list is bundled. New profiles start with
+        20M and CW as editable choices, no stations and no achievement levels.</li>
+      <li>On tab 1, set the award name, inclusive Begin/End UTC dates and times,
+        counting rule, optional minimum points and category-specific levels.</li>
+      <li>On tab 2, enter/import main and optional member calls. Callsign-list
+        import replaces the selected category. Add at least one eligible station.</li>
+      <li>On tab 3, enable eligible bands/modes, review mode groups and choose
+        category-based or mode-based points. Mode-based scoring requires a
+        points value for every enabled mode.</li>
+      <li>Save a named <code>.award.xml</code> profile, select your DXKeeper
+        <code>.mdb</code> with <strong>Browse...</strong>, then explicitly
+        choose <strong>Read and score</strong>.</li>
+    </ol>
+    <p>Begin defaults to 00:00 and End to 23:59 UTC. The entire End minute counts.
+      Old date-only profiles retain whole-day behavior. Saved profile names
+      appear in the title only after loading or successful saving.</p>
+  </section>
+  <section id="import">
+    <h2>Import and review rules</h2>
+    <p><strong>Import rules text...</strong> accepts pasted text or local
+      <code>.txt</code>/<code>.md</code> files. Analyze the draft, review every
+      finding and choose <strong>Apply draft to editor</strong>. Applying is
+      not saving. Add missing station lists and correct unsupported rules manually.</p>
+    <p>The local parser recognizes only supported patterns. It is not a general
+      award-rule interpreter. For other wording, <strong>Copy AI prompt</strong>
+      places a prompt and the supplied text on your clipboard. You may paste it
+      into your own AI chat, then paste its structured answer back for local
+      validation. AwardChecker sends nothing itself; you decide what leaves
+      the PC and must verify the answer.</p>
+    <p>The structured format keeps the header <code>AWARDSCORER-IMPORT: 1</code>
+      for compatibility. Only import content you are authorized to use.</p>
+  </section>
+  <section id="counting">
+    <h2>Eligibility, points and duplicate counting</h2>
+    <ul>
+      <li>Callsigns match exactly after trimming/case normalization. No automatic
+        suffix removal is performed. Main stations take precedence over members.</li>
+      <li>A recorded submode takes priority over its parent mode. Unknown or
+        disabled modes, missing fields and non-Y QSO_COMPLETE values need review.</li>
+      <li>Choose station, station/band, or station/band/mode counting over the
+        supported event, UTC-day or calendar-month scope. The earliest eligible
+        QSO wins its duplicate key. Review rows do not consume a key.</li>
+      <li>When mode grouping is selected, the counting key uses the assigned
+        group where the rule includes mode. Equal points do not merge groups.</li>
+      <li>Hunter levels use points and any unique-main requirement together.
+        The basic minimum qualification remains separate. Activator QSO-count
+        levels are not evaluated from a Hunter log.</li>
+      <li>MyQTHID sections share one combined score and never reset duplicate keys.</li>
+    </ul>
+    <p>The summary counts distinct bands represented by <strong>Counted</strong>
+      QSOs only. It counts distinct mode groups when grouping is selected;
+      otherwise it counts distinct effective modes. Excluded and Review rows
+      do not inflate these totals.</p>
+  </section>
+  <section id="results">
+    <h2>Review results and export</h2>
+    <p>Use the QSO details, station scores and award qualification tabs. Results
+      are a snapshot: changing rules/database selection invalidates them, and
+      refreshing always requires an explicit read.</p>
+    <p>Choose All MyQTHIDs or a location section for display. QSO CSV exports
+      include all locations in the selected row view and all detail columns.
+      Station CSV follows its counted-station filter. Sectioned HTML uses
+      visible columns in profile order and includes location headers.</p>
+    <p><strong>QSO columns...</strong> controls order/visibility. Drag table
+      headers to resize columns. Save your profile or explicitly save/restore a
+      user-default layout; app-default restore does not delete user settings.</p>
+    <p>Exports are stored in the portable Reports folder. Review HTML/CSV before
+      sharing: location headers may include your address. Hide unneeded columns
+      and use landscape/scaling when printing wide reports.</p>
+  </section>
+  <section id="privacy">
+    <h2>Local data and privacy</h2>
+    <p>Profiles, Defaults and Reports live beside the launcher, not the child
+      executable. The last successfully read database path is remembered in
+      Defaults, but startup never reads the database automatically.</p>
+    <p>The reader uses Mode=Read and SELECT queries only. A database provider may
+      manage its own shared-access lock file. AwardChecker does not update QSOs,
+      control station equipment or contact an award service.</p>
+    <p>Do not upload real logs, personal profiles, addresses, station paths or
+      unreviewed reports to public issues. Use fictional reproductions.
+      External award rules and datasets retain their own redistribution terms.</p>
+  </section>
+  <section id="troubleshooting">
+    <h2>Troubleshooting</h2>
+    <ul>
+      <li><strong>No compatible runtime/provider:</strong> follow the launcher's
+        diagnostic and verify the installed .NET Framework/provider architecture.</li>
+      <li><strong>Missing child executable/configuration:</strong> restore the
+        complete portable folder, including both architecture folders.</li>
+      <li><strong>Zero score:</strong> check UTC range, exact station lists,
+        enabled bands/modes, own-station filter and every Review reason.</li>
+      <li><strong>Import incomplete:</strong> review the draft, fill missing
+        values and verify against the official rules; do not assume inferred values.</li>
+      <li><strong>Cannot save/export:</strong> use a writable local folder and
+        inspect the reported path/error. There is no silent alternate data folder.</li>
+    </ul>
+  </section>
+  <section id="build">
+    <h2>Build and test from source</h2>
+    <p>On Windows with a .NET SDK, from the source root:</p>
+    <pre>dotnet restore Tests\AwardChecker.Tests.csproj --verbosity normal
+dotnet build Tests\AwardChecker.Tests.csproj --configuration Release --no-restore --verbosity normal
+dotnet build AwardChecker.csproj --configuration Release -p:PlatformTarget=x64 --no-restore --verbosity normal
+dotnet restore AwardChecker.Launcher.csproj --verbosity normal
+dotnet build AwardChecker.Launcher.csproj --configuration Release --no-restore --verbosity normal
+.\Tests\bin\Release\net48\AwardChecker.Tests.exe</pre>
+    <p>The ordinary tests use synthetic data and do not open a real database.
+      Optional rendered checks use <code>--preview &lt;folder&gt;</code> and
+      <code>--summary-preview &lt;image.png&gt;</code>. Never run the optional
+      <code>--database</code> check without explicit permission for that database.</p>
+  </section>
+  <section id="support">
+    <h2>Support, contributions and license</h2>
+    <p>Use the <a href="https://github.com/BattleHook/AwardChecker/issues">repository
+      issue forms</a> for reproducible bugs or feature requests. Include the
+      application version, Windows/provider architecture and synthetic steps.</p>
+    <p>Optional support: <a href="https://ko-fi.com/battlehook">Ko-fi</a>.
+      Donations are not required to use AwardChecker.</p>
+    <p>Original code and documentation use the MIT License. See the repository's
+      LICENSE and THIRD-PARTY-NOTICES.md; external software and data keep their
+      own terms. No official DXLab or award-organizer endorsement is claimed.</p>
+  </section>
+</main>
+<footer><p>AwardChecker guide. Review your rules and data before relying on any result.</p></footer>
+</body>
+</html>

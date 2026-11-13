@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible AwardChecker problem
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: "Use synthetic data. Do not attach real logs, profiles, station paths, addresses or unreviewed reports."
+  - type: input
+    id: version
+    attributes:
+      label: AwardChecker version
+      description: Include the version shown in the window title.
+      placeholder: "1.0.5"
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Windows and database provider
+      description: Include Windows version, x86/x64 and the selected ACE/Jet provider if known.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Describe rules and contacts using fictional examples.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
